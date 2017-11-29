@@ -21,20 +21,14 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
                 return finishJob(result, currentJobIndex);
             };
 
-            new Promise(function (resolveJob, rejectJob) {
-                job().then(resolveJob, rejectJob);
-                setTimeout(rejectJob, timeout, new Error('Promise timeout'));
-            })
-                .then(finish)
-                .catch(finish);
+            job().then(finish)
+            .catch(finish);
         }
 
         function finishJob(result, index) {
             out[index] = result;
-            if (out.length === jobs.length) {
+            if (curr === jobs.length) {
                 resolve(out);
-
-                return;
             }
 
             if (curr < jobs.length) {
