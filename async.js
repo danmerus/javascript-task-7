@@ -12,8 +12,7 @@ function runParallel(jobs, parallelNum) {
             resolve([]);
         }
         for (var i = 0; i < parallelNum; i++) {
-            curr += 1;
-            startJob(jobs[curr], curr);
+            startJob(jobs[curr], curr+=1);
         }
 
         function startJob(job, currentJobIndex) {
