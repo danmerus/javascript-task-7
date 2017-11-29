@@ -3,16 +3,14 @@
 exports.isStar = true;
 exports.runParallel = runParallel;
 
-function runParallel(jobs, parallelNum) {
+function runParallel(jobs, parallelNum, timeout = 1000) {
     return new Promise(resolve => {
 
         var curr = 0;
         var out = [];
-        if (!jobs.length) {
-            resolve([]);
-        }
+
         for (var i = 0; i < parallelNum; i++) {
-            startJob(jobs[curr], curr+=1);
+            startJob(jobs[curr], curr++);
         }
 
         function startJob(job, currentJobIndex) {
@@ -20,14 +18,20 @@ function runParallel(jobs, parallelNum) {
                 return finishJob(result, currentJobIndex);
             };
 
-            job().then(finish)
+            new Promise(function (resolveJob, rejectJob) {
+                job().then(resolveJob, rejectJob);
+                setTimeout(rejectJob, timeout, new Error('Promise timeout'));
+            })
+                .then(finish)
                 .catch(finish);
         }
 
         function finishJob(result, index) {
             out[index] = result;
-            if (curr === jobs.length) {
+            if (out.length === jobs.length) {
                 resolve(out);
+
+                return;
             }
 
             if (curr < jobs.length) {
