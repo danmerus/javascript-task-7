@@ -4,7 +4,7 @@ exports.isStar = true;
 exports.runParallel = runParallel;
 
 function runParallel(jobs, parallelNum) {
-    return new Promise(function (resolve) {
+    return new Promise(resolve => {
 
         var curr = 0;
         var out = [];
