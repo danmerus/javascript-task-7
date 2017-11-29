@@ -8,6 +8,9 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
 
         var curr = 0;
         var out = [];
+        if (!jobs.length) {
+            resolve([]);
+        }
 
         for (var i = 0; i < parallelNum; i++) {
             startJob(jobs[curr], curr++);
