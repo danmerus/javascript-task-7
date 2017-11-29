@@ -15,13 +15,13 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
         }
 
         function startJob(job, currentJobIndex) {
-            var onFinish = function(result){
+            var onFinish = function (result) {
                 return finishJob(result, currentJobIndex);
             };
 
-            new Promise(function(resolveJob, rejectJob) {
+            new Promise(function (resolveJob, rejectJob) {
                 job().then(resolveJob, rejectJob);
-                setTimeout(rejectJob, timeout, new Error(`Promise timeout`));
+                setTimeout(rejectJob, timeout, new Error('Promise timeout'));
             })
                 .then(onFinish);
         }
