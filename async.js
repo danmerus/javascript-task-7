@@ -3,7 +3,7 @@
 exports.isStar = true;
 exports.runParallel = runParallel;
 
-function runParallel(jobs, parallelNum, timeout = 1000) {
+function runParallel(jobs, parallelNum, timeout) {
     return new Promise(function (resolve) {
 
         var curr = 0;
@@ -22,7 +22,7 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
             };
 
             job().then(finish)
-            .catch(finish);
+                .catch(finish);
         }
 
         function finishJob(result, index) {
